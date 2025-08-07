@@ -3,16 +3,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 
-# Get the absolute path to the database file
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE_PATH = os.path.join(BASE_DIR, "student_registry.db")
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
+# Get database URL from environment variable or use SQLite for development
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./student_registry.db")
 
-# Create engine with proper connection arguments for SQLite
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False}
-)
+# Create engine with proper connection arguments
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(DATABASE_URL)
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
