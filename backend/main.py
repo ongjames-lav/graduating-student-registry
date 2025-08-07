@@ -40,8 +40,9 @@ app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 # Include routes
 app.include_router(router)
 
-# Admin password
-ADMIN_PASSWORD = "nakalimutanko"
+# Admin password from environment variable
+import os
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "nakalimutanko")  # Use environment variable or fallback for development
 
 # Root endpoint
 @app.get("/")
