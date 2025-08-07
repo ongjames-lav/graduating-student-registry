@@ -1,9 +1,11 @@
 const config = {
     development: {
-        apiUrl: 'http://localhost:8000'
+        apiUrl: 'http://localhost:8000',
+        baseUrl: ''
     },
     production: {
-        apiUrl: 'https://your-backend-url.com' // You'll need to update this with your backend URL
+        apiUrl: 'https://your-backend-url.com', // You'll need to update this with your backend URL
+        baseUrl: '/graduating-student-registry'
     }
 };
 

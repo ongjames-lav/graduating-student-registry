@@ -286,7 +286,7 @@
                     if (result.token) {
                         localStorage.setItem('auth_token', result.token);
                     }
-                    window.location.href = 'dashboard.html';
+                    window.location.href = currentConfig.baseUrl + '/dashboard.html';
                 } else {
                     const errorText = await response.text();
                     console.error('Login failed:', response.status, errorText);  // Debug log

@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Password visibility toggle
+    // Passwor                    setTimeout(() => {
+                    window.location.href = currentConfig.baseUrl + '/login.html';
+                }, 5000); // Redirect after 5 secondsisibility toggle
     const togglePassword = document.getElementById('togglePassword');
     const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
     const passwordInput = document.getElementById('password');
