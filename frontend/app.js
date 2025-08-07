@@ -1,159 +1,135 @@
-// API URL - change this to your deployed backend URL when deploying
-const API_URL = 'http://localhost:8000';
+document.addEventListener('DOMContentLoaded', () => {
+    // Password visibility toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
 
-// Helper function to handle API errors
-const handleError = (error) => {
-    console.error('Error:', error);
-    alert('An error occurred. Please try again.');
-};
+    function togglePasswordVisibility(button, input) {
+        button.addEventListener('click', () => {
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            
+            // Toggle icon (you can add different icons for visibility states)
+            button.classList.toggle('text-theme-orange');
+        });
+    }
 
-// Handle registration form submission
-if (document.getElementById('registerForm')) {
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    togglePasswordVisibility(togglePassword, passwordInput);
+    togglePasswordVisibility(toggleConfirmPassword, confirmPasswordInput);
+
+    // Form validation and submission
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
+        // Basic validation
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long!');
+            return;
+        }
+
+        // Collect form data
         const formData = {
-            last_name: document.getElementById('lastName').value,
-            first_name: document.getElementById('firstName').value,
-            middle_initial: document.getElementById('middleInitial').value,
+            lastName: document.getElementById('lastName').value,
+            firstName: document.getElementById('firstName').value,
+            middleInitial: document.getElementById('middleInitial').value,
             course: document.getElementById('course').value,
-            year: parseInt(document.getElementById('year').value),
-            graduating: document.getElementById('graduating').checked,
+            year: document.getElementById('year').value,
             gender: document.getElementById('gender').value,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+            password: password,
+            graduating: document.getElementById('graduating').checked
         };
 
         try {
-            const response = await fetch(`${API_URL}/register`, {
+            const response = await fetch('http://localhost:8000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
+                mode: 'cors',  // Explicitly set CORS mode
                 body: JSON.stringify(formData)
             });
 
+            console.log('Response status:', response.status);  // Debug log
+            
             if (response.ok) {
-                alert('Registration successful!');
-                window.location.href = 'login.html';
-            } else {
-                const data = await response.json();
-                alert(data.detail || 'Registration failed');
-            }
-        } catch (error) {
-            handleError(error);
-        }
-    });
-}
-
-// Handle login form submission
-if (document.getElementById('loginForm')) {
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new URLSearchParams();
-        formData.append('username', document.getElementById('email').value);
-        formData.append('password', document.getElementById('password').value);
-
-        try {
-            const response = await fetch(`${API_URL}/token`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.access_token);
-                // Fetch user details to check if admin
-                const userResponse = await fetch(`${API_URL}/users`, {
-                    headers: {
-                        'Authorization': `Bearer ${data.access_token}`
-                    }
-                });
-                
-                if (userResponse.ok) {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'index.html';
-                }
-            } else {
-                alert(data.detail || 'Login failed');
-            }
-        } catch (error) {
-            handleError(error);
-        }
-    });
-}
-
-// Handle admin dashboard
-if (document.getElementById('usersTable')) {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = 'login.html';
-    }
-
-    // Fetch and display users
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch(`${API_URL}/users`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                const users = await response.json();
-                const tableBody = document.getElementById('usersTable');
-                tableBody.innerHTML = '';
-
-                users.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${user.last_name}, ${user.first_name} ${user.middle_initial || ''}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${user.course}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${user.year}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.graduating ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
-                                ${user.graduating ? 'Graduating' : 'Enrolled'}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${user.email}
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
+                const result = await response.json();
+                console.log('Registration successful:', result);  // Debug log
+                showWelcomeModal(formData.firstName);
+                setTimeout(() => {
                     window.location.href = 'login.html';
-                } else {
-                    const data = await response.json();
-                    alert(data.detail || 'Failed to fetch users');
+                }, 5000); // Redirect after 5 seconds
+            } else {
+                const errorText = await response.text();
+                console.error('Registration failed:', response.status, errorText);  // Debug log
+                try {
+                    const error = JSON.parse(errorText);
+                    alert(error.detail || 'Registration failed. Please try again.');
+                } catch {
+                    alert('Registration failed. Please try again.');
                 }
             }
         } catch (error) {
-            handleError(error);
+            console.error('Network Error:', error);  // Debug log
+            alert('An error occurred. Please try again later.');
         }
+    });
+
+    // Input validation
+    const inputs = form.querySelectorAll('input[required], select[required]');
+    inputs.forEach(input => {
+        input.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            input.classList.add('border-red-500');
+        });
+
+        input.addEventListener('input', () => {
+            input.classList.remove('border-red-500');
+        });
+    });
+
+    // Modal functions
+    window.showWelcomeModal = (firstName) => {
+        const modal = document.getElementById('welcomeModal');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        welcomeMessage.textContent = `Congratulations ${firstName}! Your account has been created successfully. You will be redirected to the login page in a few seconds.`;
+        
+        modal.classList.add('show');
+        createConfetti();
     };
 
-    // Load users when page loads
-    fetchUsers();
-
-    // Handle logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('token');
+    window.closeModal = () => {
+        const modal = document.getElementById('welcomeModal');
+        modal.classList.remove('show');
         window.location.href = 'login.html';
-    });
-}
+    };
+
+    function createConfetti() {
+        const colors = ['#ff7f00', '#ff4b00', '#ff9500', '#ff6b00', '#ff5500'];
+        
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(confetti);
+
+            // Remove confetti after animation
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+    }
+});
