@@ -14,3 +14,13 @@ class User(Base):
     gender = Column(String)
     hashed_password = Column(String)
     graduating = Column(Boolean, default=False)
+    is_admin = Column(Boolean, default=False)  # New field to identify admin users
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    full_name = Column(String)
+    email = Column(String, unique=True)

@@ -27,3 +27,28 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def insert_fake_students(db):
+    from models import User
+    import random
+    first_names = ["John", "Jane", "Alex", "Emily", "Chris", "Katie", "Michael", "Sarah", "David", "Laura"]
+    last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Martinez", "Lopez"]
+    courses = ["BSIT", "BSCS", "BSIS", "BSCE"]
+    genders = ["Male", "Female", "Other"]
+    for i in range(1, 21):
+        first = random.choice(first_names)
+        last = random.choice(last_names)
+        email = f"{first.lower()}.{last.lower()}{i}@example.com"
+        user = User(
+            email=email,
+            lastName=last,
+            firstName=first,
+            middleInitial=chr(65 + (i % 26)),
+            course=random.choice(courses),
+            year=random.randint(1, 4),
+            gender=random.choice(genders),
+            hashed_password="fakehashedpassword",
+            graduating=random.choice([True, False])
+        )
+        db.add(user)
+    db.commit()

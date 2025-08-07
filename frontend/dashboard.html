@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Registry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'theme-orange': '#ff7f00',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 127, 0, 0.1);
+        }
+        
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(255, 127, 0, 0.3);
+        }
+        
+        .gradient-border {
+            border: double 1px transparent;
+            background-image: linear-gradient(#1f2937, #1f2937), 
+                            linear-gradient(to right, #ff7f00, #ff4b00);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        
+        .animate-gradient {
+            background: linear-gradient(270deg, #000000, #1a1a1a, #000000);
+            background-size: 600% 600%;
+            animation: gradientBG 10s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-black">
+    <main class="min-h-screen flex items-center justify-center animate-gradient py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl w-full p-8 glass-effect rounded-xl shadow-2xl gradient-border">
+            <div class="mb-8 floating">
+                <h2 class="text-center text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-theme-orange to-orange-500 mb-2">
+                    Student Information
+                </h2>
+                <p class="text-center text-sm text-gray-300">
+                    View and update your information
+                </p>
+            </div>
+            <form id="updateForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-300 mb-1">Last Name</label>
+                        <input id="lastName" name="lastName" type="text" required 
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700/50 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm transition-all duration-300 input-glow">
+                    </div>
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-300 mb-1">First Name</label>
+                        <input id="firstName" name="firstName" type="text" required 
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700/50 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm transition-all duration-300 input-glow">
+                    </div>
+                    <div>
+                        <label for="middleInitial" class="block text-sm font-medium text-gray-300 mb-1">Middle Initial</label>
+                        <input id="middleInitial" name="middleInitial" type="text"
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700/50 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm transition-all duration-300 input-glow">
+                    </div>
+                    <div>
+                        <label for="course" class="block text-sm font-medium text-gray-300 mb-1">Course</label>
+                        <input id="course" name="course" type="text" required value="BSIT" readonly
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 text-gray-400 bg-gray-900/80 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label for="year" class="block text-sm font-medium text-gray-300 mb-1">Year Level</label>
+                        <select id="year" name="year" required 
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 text-white bg-gray-700/50 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm transition-all duration-300 input-glow">
+                            <option value="1" class="bg-gray-700">1st Year</option>
+                            <option value="2" class="bg-gray-700">2nd Year</option>
+                            <option value="3" class="bg-gray-700">3rd Year</option>
+                            <option value="4" class="bg-gray-700">4th Year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-300 mb-1">Gender</label>
+                        <select id="gender" name="gender" required 
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 text-white bg-gray-700/50 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm transition-all duration-300 input-glow">
+                            <option value="male" class="bg-gray-700">Male</option>
+                            <option value="female" class="bg-gray-700">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                        <input id="email" name="email" type="email" required readonly
+                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-600 text-gray-400 bg-gray-900/80 focus:outline-none focus:ring-theme-orange focus:border-theme-orange focus:z-10 sm:text-sm cursor-not-allowed">
+                    </div>
+                    <div class="flex items-center justify-start space-x-2">
+                        <input id="graduating" name="graduating" type="checkbox" 
+                            class="h-4 w-4 text-theme-orange focus:ring-theme-orange border-gray-600 rounded bg-gray-700">
+                        <label for="graduating" class="block text-sm text-gray-300">
+                            Graduating Student
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-between space-x-4 pt-4">
+                    <button type="submit" 
+                        class="flex-1 py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-theme-orange to-orange-500 hover:from-orange-500 hover:to-theme-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-orange transition-all duration-300 shadow-lg hover:shadow-orange-500/20">
+                        Save Changes
+                    </button>
+                    <button type="button" onclick="logout()" 
+                        class="flex-1 py-3 px-4 border border-theme-orange text-sm font-medium rounded-md text-theme-orange hover:bg-theme-orange hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-orange transition-all duration-300">
+                        Logout
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Message Toast -->
+            <div id="successToast" class="fixed bottom-5 right-5 hidden bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-y-full">
+                Changes saved successfully!
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check if user is authenticated
+        if (!localStorage.getItem('auth_token')) {
+            window.location.href = 'login.html';
+        }
+
+        // Fetch user data when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('http://localhost:8000/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors'
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    // Populate form with user data
+                    document.getElementById('lastName').value = userData.lastName;
+                    document.getElementById('firstName').value = userData.firstName;
+                    document.getElementById('middleInitial').value = userData.middleInitial || '';
+                    document.getElementById('course').value = userData.course;
+                    document.getElementById('year').value = userData.year;
+                    document.getElementById('gender').value = userData.gender;
+                    document.getElementById('email').value = userData.email;
+                    document.getElementById('graduating').checked = userData.graduating;
+                } else {
+                    console.error('Failed to fetch user data');
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                lastName: document.getElementById('lastName').value,
+                firstName: document.getElementById('firstName').value,
+                middleInitial: document.getElementById('middleInitial').value,
+                course: document.getElementById('course').value,
+                year: document.getElementById('year').value,
+                gender: document.getElementById('gender').value,
+                graduating: document.getElementById('graduating').checked
+            };
+
+            try {
+                const response = await fetch('http://localhost:8000/user/update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showSuccessToast();
+                } else {
+                    const error = await response.json();
+                    alert(error.detail || 'Failed to update information. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+
+        function showSuccessToast() {
+            const toast = document.getElementById('successToast');
+            toast.classList.remove('hidden', 'translate-y-full');
+            setTimeout(() => {
+                toast.classList.add('translate-y-full');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
