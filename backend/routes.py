@@ -169,9 +169,9 @@ async def update_user_profile(
 async def get_all_students(request: Request, db: Session = Depends(get_db)):
     if request.cookies.get("admin_access") != "granted":
         raise HTTPException(status_code=401, detail="Admin access required")
-    students = db.query(models.User).all()
-    return [
-        {
+    try:
+        students = db.query(models.User).all()
+        return [{
             "id": s.id,
             "email": s.email,
             "lastName": s.lastName,
@@ -181,9 +181,9 @@ async def get_all_students(request: Request, db: Session = Depends(get_db)):
             "year": s.year,
             "gender": s.gender,
             "graduating": s.graduating
-        }
-        for s in students
-    ]
+        } for s in students]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 # Admin: Get a single student by ID
 @router.get("/admin/students/{student_id}")

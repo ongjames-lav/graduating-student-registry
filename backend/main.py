@@ -21,7 +21,8 @@ origins = [
     "https://ongjames-lav.github.io/membership-registry",  # Specific GitHub Pages URL
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://*.onrender.com",  # Render.com domains
+    "https://*.onrender.com"
+    "https://graduating-student-registry.onrender.com/admin-panel",  # Render.com domains
 ]
 
 app.add_middleware(
@@ -29,7 +30,7 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Cookie"],
     expose_headers=["Content-Type", "Authorization"],
     max_age=3600
 )

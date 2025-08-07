@@ -21,9 +21,27 @@ function getToken() {
 
 // Fetch all students
 async function fetchStudents() {
-    const res = await fetch(`${API_BASE}/admin/students`);
-    students = await res.json();
-    renderStudents();
+    try {
+        console.log('Fetching from:', `${API_BASE}/admin/students`);
+        const res = await fetch(`${API_BASE}/admin/students`, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        console.log('Response status:', res.status);
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error('Error fetching students:', errorText);
+            throw new Error(`Failed to fetch students: ${res.status}`);
+        }
+        students = await res.json();
+        console.log('Fetched students:', students);
+        renderStudents();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load students. Please try refreshing the page.');
+    }
 }
 
 // Render students in table
