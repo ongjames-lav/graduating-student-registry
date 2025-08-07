@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Path
+from fastapi import APIRouter, Depends, HTTPException, status, Path, Request
 from sqlalchemy.orm import Session
 from . import models
 from . import auth
@@ -164,9 +164,11 @@ async def update_user_profile(
             detail="Failed to update profile"
         )
 
-# Public: Get all students
+# Admin: Get all students
 @router.get("/admin/students")
-async def get_all_students(db: Session = Depends(get_db)):
+async def get_all_students(request: Request, db: Session = Depends(get_db)):
+    if request.cookies.get("admin_access") != "granted":
+        raise HTTPException(status_code=401, detail="Admin access required")
     students = db.query(models.User).all()
     return [
         {
@@ -183,9 +185,11 @@ async def get_all_students(db: Session = Depends(get_db)):
         for s in students
     ]
 
-# Public: Get a single student by ID
+# Admin: Get a single student by ID
 @router.get("/admin/students/{student_id}")
-async def get_student(student_id: int = Path(...), db: Session = Depends(get_db)):
+async def get_student(request: Request, student_id: int = Path(...), db: Session = Depends(get_db)):
+    if request.cookies.get("admin_access") != "granted":
+        raise HTTPException(status_code=401, detail="Admin access required")
     student = db.query(models.User).filter(models.User.id == student_id).first()
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
@@ -201,7 +205,7 @@ async def get_student(student_id: int = Path(...), db: Session = Depends(get_db)
         "graduating": student.graduating
     }
 
-# Public: Update a student by ID
+# Admin: Update a student by ID
 class StudentUpdate(BaseModel):
     lastName: str
     firstName: str
@@ -212,7 +216,9 @@ class StudentUpdate(BaseModel):
     graduating: bool = False
 
 @router.put("/admin/students/{student_id}")
-async def update_student(student_id: int, student_update: StudentUpdate, db: Session = Depends(get_db)):
+async def update_student(request: Request, student_id: int, student_update: StudentUpdate, db: Session = Depends(get_db)):
+    if request.cookies.get("admin_access") != "granted":
+        raise HTTPException(status_code=401, detail="Admin access required")
     student = db.query(models.User).filter(models.User.id == student_id).first()
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
@@ -227,9 +233,11 @@ async def update_student(student_id: int, student_update: StudentUpdate, db: Ses
     db.refresh(student)
     return {"message": "Student updated successfully"}
 
-# Public: Delete a student by ID
+# Admin: Delete a student by ID
 @router.delete("/admin/students/{student_id}")
-async def delete_student(student_id: int, db: Session = Depends(get_db)):
+async def delete_student(request: Request, student_id: int, db: Session = Depends(get_db)):
+    if request.cookies.get("admin_access") != "granted":
+        raise HTTPException(status_code=401, detail="Admin access required")
     student = db.query(models.User).filter(models.User.id == student_id).first()
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")

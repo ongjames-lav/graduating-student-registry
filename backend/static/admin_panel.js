@@ -1,5 +1,7 @@
 // Admin Panel JS for viewing, editing, and exporting students
-const API_BASE = 'http://localhost:8000';
+import currentConfig from './config.js';
+
+const API_BASE = currentConfig.apiUrl;
 let students = [];
 let editingStudentId = null;
 
