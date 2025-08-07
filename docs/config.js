@@ -1,0 +1,14 @@
+const config = {
+    development: {
+        apiUrl: 'http://localhost:8000'
+    },
+    production: {
+        apiUrl: 'https://your-backend-url.com' // You'll need to update this with your backend URL
+    }
+};
+
+// Check if we're running on GitHub Pages
+const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const currentConfig = isProduction ? config.production : config.development;
+
+export default currentConfig;

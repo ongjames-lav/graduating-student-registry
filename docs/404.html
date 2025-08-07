@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <script>
+        // Single Page App handling for GitHub Pages
+        const redirectToHome = () => {
+            const path = window.location.pathname;
+            const url = window.location.origin + 
+                       '/graduating-student-registry' + 
+                       (path === '/404.html' ? '' : path);
+            window.location.replace(url);
+        };
+        redirectToHome();
+    </script>
+</head>
+<body>
+    Redirecting...
+</body>
+</html>
