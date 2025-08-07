@@ -2,9 +2,9 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-import models  # Import models to ensure they are registered with SQLAlchemy
-from routes import router
-from database import engine, Base
+from . import models  # Import models to ensure they are registered with SQLAlchemy
+from .routes import router
+from .database import engine, Base
 import uvicorn
 
 # Create FastAPI instance
