@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from models import User
+from .models import User
 
 # Configuration
 SECRET_KEY = "your-secret-key-keep-it-safe"  # In production, use a secure secret key

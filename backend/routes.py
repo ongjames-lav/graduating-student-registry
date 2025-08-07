@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from sqlalchemy.orm import Session
-import models
-import auth
-from database import get_db
+from . import models
+from . import auth
+from .database import get_db
 from pydantic import BaseModel
 from datetime import timedelta
 from typing import Optional
