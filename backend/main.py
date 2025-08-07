@@ -17,7 +17,8 @@ Base.metadata.create_all(bind=engine)
 origins = [
     "http://localhost:5500",
     "http://127.0.0.1:5500",
-    "https://ongjames-lav.github.io",  # GitHub Pages domain
+    "https://ongjames-lav.github.io",  # GitHub Pages base domain
+    "https://ongjames-lav.github.io/membership-registry",  # Specific GitHub Pages URL
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "https://*.onrender.com",  # Render.com domains
@@ -34,7 +35,7 @@ app.add_middleware(
 )
 
 # Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 # Include routes
 app.include_router(router)
@@ -56,7 +57,7 @@ async def health_check():
 @app.get("/admin-panel", response_class=HTMLResponse)
 async def admin_panel(request: Request):
     if request.cookies.get("admin_access") == "granted":
-        with open("static/admin_panel.html") as f:
+        with open("backend/static/admin_panel.html") as f:
             return HTMLResponse(f.read())
     return RedirectResponse("/admin-login")
 
