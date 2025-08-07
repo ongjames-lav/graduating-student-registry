@@ -152,7 +152,9 @@
         </div>
     </main>
 
-    <script>
+    <script type="module">
+        import currentConfig from './config.js';
+        
         class DVDLogo {
             constructor() {
                 this.logo = document.querySelector('.bouncing-logo');
@@ -267,7 +269,7 @@
             };
 
             try {
-                const response = await fetch('http://localhost:8000/login', {
+                const response = await fetch(`${currentConfig.apiUrl}/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
