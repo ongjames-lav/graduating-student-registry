@@ -13,13 +13,24 @@ app = FastAPI(title="Student Registry API")
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-# Configure CORS - Development settings (more permissive)
+# Configure CORS with specific allowed origins
+origins = [
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+    "https://ongjames-lav.github.io",  # GitHub Pages domain
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://*.onrender.com",  # Render.com domains
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins in development
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
+    expose_headers=["Content-Type", "Authorization"],
+    max_age=3600
 )
 
 # Mount static files
