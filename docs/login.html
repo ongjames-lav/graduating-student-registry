@@ -143,7 +143,7 @@
                     </button>
                     
                     <div class="text-center">
-                        <a href="index.html" class="inline-block text-theme-orange hover:text-orange-500 transition-colors duration-200 text-sm">
+                        <a href="./index.html" class="inline-block text-theme-orange hover:text-orange-500 transition-colors duration-200 text-sm">
                             Don't have an account? Register
                         </a>
                     </div>
@@ -288,7 +288,7 @@
                     if (result.token) {
                         localStorage.setItem('auth_token', result.token);
                     }
-                    window.location.href = currentConfig.baseUrl + '/dashboard.html';
+                    window.location.href = `${currentConfig.baseUrl}/dashboard.html`;
                 } else {
                     const errorText = await response.text();
                     console.error('Login failed:', response.status, errorText);  // Debug log

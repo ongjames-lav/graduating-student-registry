@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Registration successful:', result);  // Debug log
                 showWelcomeModal(formData.firstName);
                 setTimeout(() => {
-                    window.location.href = 'login.html';
+                    window.location.href = `${currentConfig.baseUrl}/login.html`;
                 }, 5000); // Redirect after 5 seconds
             } else {
                 const errorText = await response.text();
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.closeModal = () => {
         const modal = document.getElementById('welcomeModal');
         modal.classList.remove('show');
-        window.location.href = 'login.html';
+        window.location.href = `${currentConfig.baseUrl}/login.html`;
     };
 
     function createConfetti() {
