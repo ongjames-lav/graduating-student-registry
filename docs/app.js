@@ -1,7 +1,7 @@
+import currentConfig from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Passwor                    setTimeout(() => {
-                    window.location.href = currentConfig.baseUrl + '/login.html';
-                }, 5000); // Redirect after 5 secondsisibility toggle
+    // Password visibility toggle
     const togglePassword = document.getElementById('togglePassword');
     const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
     const passwordInput = document.getElementById('password');
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/register', {
+            const response = await fetch(`${currentConfig.apiUrl}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
