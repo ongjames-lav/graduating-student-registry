@@ -4,8 +4,8 @@ const config = {
         baseUrl: ''
     },
     production: {
-        apiUrl: 'https://your-backend-url.com', // You'll need to update this with your backend URL
-        baseUrl: '/graduating-student-registry'
+        apiUrl: 'https://graduating-student-registry.onrender.com', // Render.com backend URL
+        baseUrl: '/membership-registry'
     }
 };
 
