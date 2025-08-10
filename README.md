@@ -1,6 +1,7 @@
 # Graduating Student Registry
 
 A web application for managing graduating student registrations at BSIT department. Built with FastAPI backend and modern web frontend.
+<img width="1900" height="872" alt="image" src="https://github.com/user-attachments/assets/8e0dd03e-faf8-4396-9776-bb14b2d93af4" />
 
 ## Features
 
